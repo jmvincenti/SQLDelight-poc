@@ -1,0 +1,19 @@
+ALTER TABLE userDb ADD COLUMN isAdmin INTEGER DEFAULT 0;
+
+CREATE TABLE contentDb (
+      id TEXT NOT NULL PRIMARY KEY,
+      title TEXT,
+      body TEXT,
+      authorId TEXT NOT NULL
+  );
+
+CREATE VIEW contentViewDb AS
+SELECT
+contentDb.id AS contentId,
+contentDb.title AS contentTitle,
+contentDb.body AS contentBody,
+userDb.id AS userId,
+userDb.first_name AS userFirstName,
+userDb.last_name AS userLastName
+FROM contentDb
+INNER JOIN userDb ON userDb.id = contentDb.authorId;
