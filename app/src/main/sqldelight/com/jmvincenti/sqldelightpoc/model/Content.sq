@@ -1,7 +1,9 @@
+import com.jmvincenti.sqldelightpoc.domain.LocalizedString;
+
 CREATE TABLE contentDb (
       id TEXT NOT NULL PRIMARY KEY,
       title TEXT,
-      body TEXT,
+      body TEXT AS LocalizedString,
       authorId TEXT NOT NULL
   );
 
