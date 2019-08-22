@@ -13,6 +13,6 @@ interface ContentRepository {
 data class Content(
     val id: String,
     val title: String?,
-    val body: String?,
+    val body: LocalizedString?,
     val author: User
 )

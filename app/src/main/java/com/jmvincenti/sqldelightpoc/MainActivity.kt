@@ -6,9 +6,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.jmvincenti.sqldelightpoc.domain.Content
 import com.jmvincenti.sqldelightpoc.domain.ContentRepository
+import com.jmvincenti.sqldelightpoc.domain.LocalizedString
 import com.jmvincenti.sqldelightpoc.domain.User
 import com.jmvincenti.sqldelightpoc.domain.UserRepository
+import com.jmvincenti.sqldelightpoc.model.ContentDb
 import com.jmvincenti.sqldelightpoc.repositories.ContentRepositoryImpl
+import com.jmvincenti.sqldelightpoc.repositories.LocalizedStringAdapter
 import com.jmvincenti.sqldelightpoc.repositories.UserRepositoryImpl
 import com.squareup.sqldelight.android.AndroidSqliteDriver
 import kotlinx.android.synthetic.main.activity_main.*
@@ -57,7 +60,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun injectRepositories() {
         val driver = AndroidSqliteDriver(PocDatabase.Schema, applicationContext, "User.db")
-        database = PocDatabase(driver)
+        database = PocDatabase(driver, contentDbAdapter = ContentDb.Adapter(LocalizedStringAdapter))
 
         userRepository = UserRepositoryImpl(database.userQueries)
         contentRepository = ContentRepositoryImpl(database, database.contentQueries, userRepository)
@@ -76,7 +79,7 @@ class MainActivity : AppCompatActivity() {
         val content = Content(
                 id = System.currentTimeMillis().toString(),
                 title = "Title:${((random() * 1000).toInt())}",
-                body = "UserLastName expected:${user.lastName}",
+                body = null, //LocalizedString("fr", "UserLastName expected:${user.lastName}"),
                 author = user
         )
         contentRepository.addContent(content)
